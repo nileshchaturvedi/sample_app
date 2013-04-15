@@ -82,6 +82,13 @@ describe "when email format is invalid" do
 	before { @user.password = @user.password_confirmation = " " }
 	it { should_not be_valid }
   end
+  describe "accessible attributes" do
+    it "should not allow access to admin" do
+      expect do
+        @user.update_attributes(:admin => true)
+      end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+    end    
+  end
   describe "when password doesn't match confirmation" do
 	before { @user.password_confirmation = "mismatch" }
 	it { should_not be_valid }
