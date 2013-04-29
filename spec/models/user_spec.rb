@@ -58,6 +58,14 @@ describe User do
       subject { other_user }
       its(:followers) { should include(@user) }
     end
+    it "should destroy associated relationships" do
+      relationships = @user.relationships.dup
+      @user.destroy
+      relationships.should_not be_empty
+      relationships.each do |relationship|
+        Relationship.find_by_id(followed_id).should be_nil
+      end
+    end
   end
 
   describe "when name is not present" do
